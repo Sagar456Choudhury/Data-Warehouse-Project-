@@ -111,4 +111,6 @@ This project is licensed under the [MIT License](LICENSE). You are free to use, 
 Hi, I'm Sagar Choudhury, a passionate Data Analyst with 3+ years of experience in driving business growth through data insights. I specialize in SQL, Python, Tableau, and Power BI, and love working on ETL pipelines, cloud data tools (AWS, BigQuery), and predictive analytics.
 
 Currently based in Bangalore, India, I'm open to collaborations and full-time roles. Let's connect and build meaningful data solutions together!
-🔗 LinkedIn. | 🖥 GitHub | 📧 sagarchoudhury5696@gmail.com
+📧 **Email**: [sagarchoudhury5696@gmail.com](mailto:sagarchoudhury5696@gmail.com)  
+🔗 **LinkedIn**: [LinkedIn: Sagar Choudhury](https://www.linkedin.com/in/sagar-choudhury-018383264/)
+🖥 **GitHub**: [Sagar456Choudhury](https://github.com/Sagar456Choudhury)  
