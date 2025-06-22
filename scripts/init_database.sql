@@ -17,30 +17,14 @@ USE master;
 go
 
 -- Drop and recreate the 'Datawarehouse' database
-if exists (select 1 from sys.database where name = 'DataWarehouse')
-begin 
-  alter database DataWarehouse set single_user with rollback immediate;
-  drop database DataWarehouse;
-end;
-go
-
--- Create The Database 'DataWarehouse' database
-create database DataWarehouse;
-go
-
-use DataWarehouse;
-go
-
--- Create Schemas:
-Create Schema bronze;
-go
 IF OBJECT_ID('bronze.sp_load_all_source_data', 'P') IS NOT NULL
     DROP PROCEDURE bronze.sp_load_all_source_data;
 GO
 create procedure bronze.sp_load_all_source_data as 
 begin
-	declare @start_time datetime, @end_time datetime
+	declare @start_time datetime, @end_time datetime, @batch_start_time datetime, @batch_end_time datetime;
 	begin try
+		set @batch_start_time = GETDATE();
 		print'=============================================';
 		print'Loading the Bronze Layer ';
 		print'=============================================';
@@ -230,6 +214,12 @@ begin
 
 		--select * from bronze.erp_PX_CAT_G1V2;
 
+		set @batch_end_time = GETDATE();
+		print'==========================================';
+		print'Loading Bronze Laeyr is Completed:';
+		print'	- Total Loading Duration:' + cast(datediff(second, @batch_start_time,@batch_end_time) as nvarchar) + 'seconds';
+		print'==========================================';
+
 		PRINT '✅ All source files loaded successfully into Bronze layer.';
 		end try
 		begin catch
@@ -242,7 +232,6 @@ go
 
 
 exec bronze.sp_load_all_source_data;
-
   
 create schema silver;
 go
