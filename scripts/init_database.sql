@@ -17,6 +17,20 @@ USE master;
 go
 
 -- Drop and recreate the 'Datawarehouse' database
+If Exists (select 1 from sys.database where name = 'DatawWarhouse')
+Begin
+	alter database DataWarehouse set single_user with rollback immediate;
+	drop database DataWarehouse;
+end;
+go
+
+-- Create the 'DataWarehouse' database
+create database DataWarehouse;
+go
+
+Use DataWarehouse;
+go
+	
 IF OBJECT_ID('bronze.sp_load_all_source_data', 'P') IS NOT NULL
     DROP PROCEDURE bronze.sp_load_all_source_data;
 GO
