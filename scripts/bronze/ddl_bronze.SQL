@@ -1,43 +1,16 @@
-/*
-====================================================================================
-Stored Procedure Script: bronze.sp_load_all_source_data
-====================================================================================
+/* 
+=====================================================================
+DDL Script: Create Bronze Tables
+=====================================================================
 
 Script Purpose:
-This stored procedure loads raw data from flat files into the Bronze layer tables.
-It performs the following:
-    - Drops and recreates Bronze tables in the 'bronze' schema
-    - Loads data using BULK INSERT from CSV files
-    - Logs loading progress and duration
-    - Handles exceptions with TRY...CATCH block
+	This script create tables in the 'bronze' schema, dropping existing tbales 
+	if they already exist. 
+	Run this script to re-defined the DDL structure of 'bronze' Tables
+=======================================================================
+/* 
 
-Usage:
-    EXEC bronze.sp_load_all_source_data;
-load_bronze_layer_proc.sql
-Defines the stored procedure `bronze.sp_load_all_source_data` to bulk load data from CSVs.
-
-To execute:
-```sql
-EXEC bronze.sp_load_all_source_data;
-
-
-IF OBJECT_ID('bronze.sp_load_all_source_data', 'P') IS NOT NULL
-    DROP PROCEDURE bronze.sp_load_all_source_data;
-GO
-create procedure bronze.sp_load_all_source_data as 
-begin
-	declare @start_time datetime, @end_time datetime, @batch_start_time datetime, @batch_end_time datetime;
-	begin try
-		set @batch_start_time = GETDATE();
-		print'=============================================';
-		print'Loading the Bronze Layer ';
-		print'=============================================';
-
-
-		print'---------------------------------------------';
-		print'Loading crm tables';
-		print'---------------------------------------------';
-		if object_id('bronze.crm_cust_info', 'U') is not null
+if object_id('bronze.crm_cust_info', 'U') is not null
 			drop table bronze.crm_cust_info;
 		create table bronze.crm_cust_info(
 			cst_id			int,
@@ -217,22 +190,3 @@ begin
 
 
 		--select * from bronze.erp_PX_CAT_G1V2;
-
-		set @batch_end_time = GETDATE();
-		print'==========================================';
-		print'Loading Bronze Laeyr is Completed:';
-		print'	- Total Loading Duration:' + cast(datediff(second, @batch_start_time,@batch_end_time) as nvarchar) + 'seconds';
-		print'==========================================';
-
-		PRINT '✅ All source files loaded successfully into Bronze layer.';
-		end try
-		begin catch
-		print'Error occured during loading bronze layer:';
-		print'Error messagae' + error_message();
-		print('Error message') + cast(error_number() as nvarchar);
-		end catch
-end;
-go
-
-
-exec bronze.sp_load_all_source_data;
